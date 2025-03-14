@@ -1,13 +1,28 @@
-2.
-select max(length) from trek;
+-- 2.
+select length from trek
+order by length desc
+limit 1;
+
 select name from trek
 where length >= '00:03:30';
+
 select name from collection
 where date between '2018-01-01' and '2020-12-31';
-select max(name) from music_artist;
+
+select name from music_artist
+where name not like '% %';
+
 select name from trek
-where name like '%My%' or name like '%мой%';
-3.
+where name ilike 'мой%' 
+or name ilike '%мой'
+or name ilike '%мой%'
+or name ilike 'мой'
+or name ilike 'my%'
+or name ilike '%my'
+or name ilike '%my%'
+or name ilike 'my';
+
+-- 3.
 select mg.name as genre_name, count(ma.id) as artist_count
 from music_genre mg
 left join artistsgenres ag on ag.genre_id = mg.id
@@ -29,11 +44,11 @@ SELECT a.name AS artist_name
 FROM music_artist a
 WHERE a.id NOT IN (
        SELECT 
-           DISTINCT id
-       FROM 
-           Music_album
+           id from artistalbums aa
+       JOIN
+	       music_album ma ON ma.id = aa.album_id
        WHERE 
-           EXTRACT(YEAR FROM date) = 2020
+           ma.date >= '2020-01-01'
     )
 ORDER BY a.name;
 
